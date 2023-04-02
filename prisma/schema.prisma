@@ -9,10 +9,18 @@ datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
 }
+model Comment {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  comment String
+  pokemonPlushId String @db.ObjectId
+  pokemonPlush PokemonPlush @relation(fields: [pokemonPlushId], references: [id])
+}
 
 model PokemonPlush {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   name String
   plushName String
   url String
+  comments Comment[]
 }
