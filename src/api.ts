@@ -15,7 +15,7 @@ export type PokemonObject = {
 export async function getPokemonPlush(
   name: string | undefined
 ): Promise<Array<PokemonObject>> {
-  const { data } = await api.get("/plush", {
+  const { data } = await api.get("/api/plush", {
     params: {
       name,
     },
