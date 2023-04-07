@@ -1,21 +1,35 @@
 import { Box, Container, Grid } from "@mui/material";
+import type { PokemonPlush } from "@prisma/client";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
-import { PokemonObject } from "~/api";
+import { useState } from "react";
+import { Toaster } from "react-hot-toast";
 import PokemonCard from "~/components/Card";
-import { getFirstPokemonPlush } from "../../prisma/pokemonPlush";
+import CommentSection from "~/components/CommentSection";
+import { prisma } from "~/server/prisma";
 export const getServerSideProps: GetServerSideProps = async () => {
-  const list = await getFirstPokemonPlush();
+  const firstPlush = await prisma.pokemonPlush.findFirst();
   return {
     props: {
-      list,
+      list: [firstPlush],
     },
   };
 };
 type Props = {
-  list: PokemonObject[];
+  list: PokemonPlush[];
 };
 export default function Home({ list }: Props) {
+  const placeholder: PokemonPlush[] = [
+    {
+      id: "",
+      name: "",
+      plushName: "",
+      url: "https://www.kindpng.com/picc/m/107-1075263_transparent-pokeball-png-pokemon-ball-2d-png-download.png",
+    },
+  ];
+  const [selected, setSelected] = useState(
+    list && list.length > 0 ? list[0] : placeholder[0]
+  );
   return (
     <>
       <Head>
@@ -43,11 +57,15 @@ export default function Home({ list }: Props) {
             }}
           >
             <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <PokemonCard list={list} />
+              <Grid item xs={12} md={6}>
+                <PokemonCard selected={selected} setSelected={setSelected} />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <CommentSection selectedId={selected.id} />
               </Grid>
             </Grid>
           </Box>
+          <Toaster />
         </Container>
       </main>
     </>

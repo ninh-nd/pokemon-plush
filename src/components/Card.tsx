@@ -6,23 +6,17 @@ import {
   Typography,
 } from "@mui/material";
 import { debounce } from "@mui/material/utils";
-import { useQuery } from "@tanstack/react-query";
+import type { PokemonPlush } from "@prisma/client";
 import Image from "next/image";
-import { SyntheticEvent, useState } from "react";
-import { getPokemonPlush, PokemonObject } from "~/api";
+import { Dispatch, SetStateAction, SyntheticEvent, useState } from "react";
+import { trpc } from "~/utils/trpc";
 type Props = {
-  list: PokemonObject[];
+  selected: PokemonPlush;
+  setSelected: Dispatch<SetStateAction<PokemonPlush>>;
 };
-export default function PokemonCard({ list }: Props) {
-  const [selected, setSelected] = useState(list[0]);
-  const [inputText, setInputText] = useState("");
-  const { data, isLoading } = useQuery(
-    ["pokemon", inputText],
-    () => getPokemonPlush(inputText),
-    {
-      enabled: Boolean(inputText),
-    }
-  );
+export default function PokemonCard({ selected, setSelected }: Props) {
+  const [inputText, setInputText] = useState<string | undefined>(undefined);
+  const { data, isLoading } = trpc.plush.list.useQuery({ name: inputText });
   const options = data ?? [];
   const debouncedSetInputText = debounce(setInputText, 1000);
   function handleInputChange(
@@ -40,7 +34,7 @@ export default function PokemonCard({ list }: Props) {
   });
   function handleChange(
     event: SyntheticEvent<Element, Event>,
-    value: PokemonObject | null
+    value: PokemonPlush | null
   ) {
     if (!value) return;
     const index = options.findIndex((option) => option.id === value.id);
