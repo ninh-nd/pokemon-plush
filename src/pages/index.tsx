@@ -1,4 +1,6 @@
-import { Box, Container, Grid } from "@mui/material";
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
 import type { PokemonPlush } from "@prisma/client";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
@@ -16,16 +18,11 @@ export const getServerSideProps: GetServerSideProps = async () => {
   };
 };
 type Props = {
-  firstPokemon: PokemonPlush;
+  firstPokemon: PokemonPlush | null;
 };
 export default function Home({ firstPokemon }: Props) {
-  const placeholder: PokemonPlush = {
-    id: "6429605255d3563f0ea24f75",
-    name: "Litten",
-    plushName: "ピカピカバッグ Pika Pika Bag 2017 plush keychain + mug",
-    url: "https://i.ibb.co/44Hz4MX/4521329208787-03-L-Copy-2.jpg",
-  };
-  const [selected, setSelected] = useState(firstPokemon || placeholder);
+  if (!firstPokemon) return <></>;
+  const [selected, setSelected] = useState(firstPokemon);
   return (
     <>
       <Head>
