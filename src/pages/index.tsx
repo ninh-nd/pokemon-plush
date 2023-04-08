@@ -11,25 +11,21 @@ export const getServerSideProps: GetServerSideProps = async () => {
   const firstPlush = await prisma.pokemonPlush.findFirst();
   return {
     props: {
-      list: [firstPlush],
+      firstPokemon: firstPlush,
     },
   };
 };
 type Props = {
-  list: PokemonPlush[];
+  firstPokemon: PokemonPlush;
 };
-export default function Home({ list }: Props) {
-  const placeholder: PokemonPlush[] = [
-    {
-      id: "",
-      name: "",
-      plushName: "",
-      url: "https://www.kindpng.com/picc/m/107-1075263_transparent-pokeball-png-pokemon-ball-2d-png-download.png",
-    },
-  ];
-  const [selected, setSelected] = useState(
-    list && list.length > 0 ? list[0] : placeholder[0]
-  );
+export default function Home({ firstPokemon }: Props) {
+  const placeholder: PokemonPlush = {
+    id: "6429605255d3563f0ea24f75",
+    name: "Litten",
+    plushName: "ピカピカバッグ Pika Pika Bag 2017 plush keychain + mug",
+    url: "https://i.ibb.co/44Hz4MX/4521329208787-03-L-Copy-2.jpg",
+  };
+  const [selected, setSelected] = useState(firstPokemon || placeholder);
   return (
     <>
       <Head>
