@@ -18,6 +18,7 @@ import { ChangeEvent, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { trpc } from "~/utils/trpc";
+
 type Props = {
   selectedId: string;
 };
@@ -57,15 +58,20 @@ function TypingCommentSection({ selectedId }: Props) {
         <Controller
           name="rating"
           control={control}
-          defaultValue={0}
+          defaultValue={3}
           render={({ field: { onChange, value } }) => (
-            <Rating
-              name="rating"
-              icon={<Favorite fontSize="inherit" />}
-              emptyIcon={<FavoriteBorder fontSize="inherit" />}
-              onChange={onChange}
-              value={Number(value)}
-            />
+            <Stack spacing={1} alignItems="center">
+              <Typography variant="body1" color="initial" display="inline">
+                How much do you like this plush?
+              </Typography>
+              <Rating
+                name="rating"
+                icon={<Favorite fontSize="inherit" />}
+                emptyIcon={<FavoriteBorder fontSize="inherit" />}
+                onChange={onChange}
+                value={Number(value)}
+              />
+            </Stack>
           )}
         />
         <TextField
@@ -85,7 +91,7 @@ function TypingCommentSection({ selectedId }: Props) {
           helperText={errors.comment ? "Comment is required" : ""}
         />
         <Button variant="contained" type="submit">
-          Submit
+          Add your comment
         </Button>
       </Stack>
     </form>
@@ -102,7 +108,7 @@ function ListComments({ comments }: { comments: Comment[] }) {
   const slicedComments = comments.slice(slice, slice + pageSize);
   const counts = Math.ceil(comments.length / pageSize);
   return (
-    <Stack>
+    <Stack minHeight={{ md: 700 }}>
       <Typography variant="h6">Comments</Typography>
       <List>
         {slicedComments.map((comment) => (
@@ -140,7 +146,7 @@ export default function CommentSection({ selectedId }: Props) {
   });
   const comments = commentQuery.data ?? [];
   return (
-    <Box>
+    <Box display="flex" flexDirection="column" justifyContent="space-between">
       <TypingCommentSection selectedId={selectedId} />
       <ListComments comments={comments} />
     </Box>

@@ -34,7 +34,9 @@ export default function Home({ firstPokemon }: Props) {
         <Container
           maxWidth="lg"
           sx={{
-            height: "100vh",
+            height: {
+              md: "100vh",
+            },
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
@@ -42,13 +44,13 @@ export default function Home({ firstPokemon }: Props) {
         >
           <Box
             sx={{
+              width: "100%",
               display: "flex",
               justifyContent: "center",
               flexDirection: "column",
-              m: 2,
             }}
           >
-            <Grid container spacing={2}>
+            <Grid container spacing={2} alignItems="center">
               <Grid item xs={12} md={6}>
                 <PokemonCard selected={selected} setSelected={setSelected} />
               </Grid>
