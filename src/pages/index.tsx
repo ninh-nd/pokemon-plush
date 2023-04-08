@@ -34,9 +34,7 @@ export default function Home({ firstPokemon }: Props) {
         <Container
           maxWidth="lg"
           sx={{
-            height: {
-              md: "100vh",
-            },
+            minHeight: "100vh",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",

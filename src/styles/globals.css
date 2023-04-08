@@ -6,7 +6,7 @@ html {
 * {
   box-sizing: border-box;
 }
-body {
+html {
   background-image: url("/wave-background.svg");
   background-repeat: no-repeat;
   background-position: center;
