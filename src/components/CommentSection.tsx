@@ -14,7 +14,7 @@ import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import type { Comment } from "@prisma/client";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { trpc } from "~/utils/trpc";
@@ -29,6 +29,11 @@ type FormProps = {
   rating: number;
 };
 function TypingCommentSection({ selectedId }: Props) {
+  // Reset submit button for every different selectedId
+  useEffect(() => {
+    setIsDisabled(false);
+  }, [selectedId]);
+  const [isDisabled, setIsDisabled] = useState(false);
   const {
     register,
     handleSubmit,
@@ -40,6 +45,7 @@ function TypingCommentSection({ selectedId }: Props) {
     onSuccess() {
       utils.comment.list.invalidate();
       toast("Comment added!");
+      setIsDisabled(true);
     },
   });
   function onSubmit(data: FormProps) {
@@ -90,7 +96,7 @@ function TypingCommentSection({ selectedId }: Props) {
           error={!!errors.comment}
           helperText={errors.comment ? "Comment is required" : ""}
         />
-        <Button variant="contained" type="submit">
+        <Button variant="contained" type="submit" disabled={isDisabled}>
           Add your comment
         </Button>
       </Stack>
