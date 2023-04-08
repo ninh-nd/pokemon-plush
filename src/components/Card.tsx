@@ -1,10 +1,8 @@
-import {
-  Autocomplete,
-  CircularProgress,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import Autocomplete from "@mui/material/Autocomplete";
+import CircularProgress from "@mui/material/CircularProgress";
+import Stack from "@mui/material/Stack";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 import { debounce } from "@mui/material/utils";
 import type { PokemonPlush } from "@prisma/client";
 import Image from "next/image";
